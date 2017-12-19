@@ -8,11 +8,11 @@ import os
 class LibqrencodeConan(ConanFile):
     name = "libqrencode"
     version = "4.0.0"
-    url = "https://github.com/bincrafters/conan-libqrencode.git"
+    url = "https://github.com/bincrafters/conan-libqrencode"
     description = "A fast and compact QR Code encoding library"
-    license = "Open source: https://github.com/fukuchi/libqrencode/blob/master/COPYING"
-    exports = ["sources.patch"]
-    exports_sources = ["CMakeLists.txt", "COPYING"]
+    license = "LGPL-2.1"
+    exports = ["LICENSE.md"]
+    exports_sources = ["CMakeLists.txt", "sources.patch"]
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = "shared=False"
@@ -37,12 +37,11 @@ class LibqrencodeConan(ConanFile):
 
     def package(self):
         self.copy(pattern="qrencode.h", dst="include", src="sources", keep_path=False)
-        with tools.chdir("sources"):
-            self.copy(pattern="*.dll", dst="bin", src="bin", keep_path=False)
-            self.copy(pattern="*.lib", dst="lib", src="lib", keep_path=False)
-            self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
-            self.copy(pattern="*.so*", dst="lib", src="lib", keep_path=False)
-            self.copy(pattern="*.dylib", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.dll", dst="bin", src="bin", keep_path=False)
+        self.copy(pattern="*.lib", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.a", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.so*", dst="lib", src="lib", keep_path=False)
+        self.copy(pattern="*.dylib", dst="lib", src="lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
