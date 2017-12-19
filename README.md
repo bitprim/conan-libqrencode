@@ -1,8 +1,10 @@
-## Conan Package for libpng
+## Conan Package for libqrencode
 
 [Conan.io](https://conan.io) package for [libqrencode](https://fukuchi.org/works/qrencode/) project
 
+
 The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/bincrafters/public-conan/libqrencode%3Abincrafters).
+
 
 ## For Users: Use this package
 
@@ -45,4 +47,4 @@ The following command both runs all the steps of the conan file, and publishes t
     $ conan upload libqrencode/4.0.0@bincrafters/stable --all -r bincrafters
 
 ### License
-[LICENSE](LICENSE)
+[MIT](LICENSE)
