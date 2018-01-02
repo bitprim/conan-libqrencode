@@ -10,15 +10,17 @@ class LibqrencodeConan(ConanFile):
     version = "4.0.0"
     url = "https://github.com/bincrafters/conan-libqrencode"
     description = "A fast and compact QR Code encoding library"
-    license = "LGPL-2.1"
+    license = "LGPL-2.1, LGPL-3.0"
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt", "sources.patch"]
+    generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = "shared=False"
-    generators = "cmake"
-    requires = "libiconv/1.15@bincrafters/stable", \
+    requires = (
+        "libiconv/1.15@bincrafters/stable", 
         "libpng/1.6.34@bincrafters/stable"
+    )
 
     def source(self):
         source_url = "https://github.com/fukuchi/libqrencode"
