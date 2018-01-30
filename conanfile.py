@@ -8,7 +8,7 @@ import os
 class LibqrencodeConan(ConanFile):
     name = "libqrencode"
     version = "4.0.0"
-    url = "https://github.com/bincrafters/conan-libqrencode"
+    url = "https://github.com/bitprim/conan-libqrencode"
     description = "A fast and compact QR Code encoding library"
     license = "LGPL-2.1, LGPL-3.0"
     exports = ["LICENSE.md"]
@@ -17,9 +17,10 @@ class LibqrencodeConan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False]}
     default_options = "shared=False"
+    
     requires = (
-        "libiconv/1.15@bincrafters/stable", 
-        "libpng/1.6.34@bincrafters/stable"
+        "libiconv/1.15@bitprim/stable", 
+        "libpng/1.6.34@bitprim/stable"
     )
 
     def source(self):
