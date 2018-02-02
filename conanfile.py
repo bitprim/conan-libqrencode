@@ -18,6 +18,8 @@ class LibqrencodeConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     
+    build_policy = "missing"
+    
     requires = (
         "libiconv/1.15@bitprim/stable", 
         "libpng/1.6.34@bitprim/stable"
