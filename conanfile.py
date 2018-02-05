@@ -15,15 +15,52 @@ class LibqrencodeConan(ConanFile):
     exports_sources = ["CMakeLists.txt", "sources.patch"]
     generators = "cmake"
     settings = "os", "arch", "compiler", "build_type"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
-    
+
+    options = {
+                "shared": [True, False], 
+                "fPIC": [True, False]
+    }
+
+    default_options = "shared=False", "fPIC=True"
+
+
     build_policy = "missing"
     
     requires = (
         "libiconv/1.15@bitprim/stable", 
         "libpng/1.6.34@bitprim/stable"
     )
+
+    @property
+    def msvc_mt_build(self):
+        return "MT" in str(self.settings.compiler.runtime)
+
+    @property
+    def fPIC_enabled(self):
+        if self.settings.compiler == "Visual Studio":
+            return False
+        else:
+            return self.options.fPIC
+
+    @property
+    def is_shared(self):
+        # if self.options.shared and self.msvc_mt_build:
+        if self.settings.compiler == "Visual Studio" and self.msvc_mt_build:
+            return False
+        else:
+            return self.options.shared
+
+    def configure(self):
+        del self.settings.compiler.libcxx #Pure-C 
+
+    def config_options(self):
+        self.output.info('*-*-*-*-*-* def config_options(self):')
+        if self.settings.compiler == "Visual Studio":
+            self.options.remove("fPIC")
+
+            if self.options.shared and self.msvc_mt_build:
+                self.options.remove("shared")
+
 
     def source(self):
         source_url = "https://github.com/fukuchi/libqrencode"
@@ -35,8 +72,14 @@ class LibqrencodeConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        
+        cmake.verbose = True
+
         cmake.definitions["WITH_TOOLS"] = False
         cmake.definitions["WITH_TESTS"] = False
+
+        cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.fPIC_enabled
+
         cmake.configure()
         cmake.build()
 
